@@ -6,13 +6,18 @@
 
 ```css
 .foo {
-    /* Input example */
+    background-image: url('img/logo.jpg');
 }
 ```
 
 ```css
 .foo {
-  /* Output example */
+    background-image: url('img/logo.jpg');
+    background-image: image-set(
+        "logo.avif" type("image/avif"),
+        "logo.webp" type("image/webp"),
+        "logo.jpg" type("image/jpeg")
+    );
 }
 ```
 
