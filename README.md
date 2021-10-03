@@ -19,6 +19,8 @@
 }
 ```
 
+⚠ This plugin does **NOT** convert your images to avif or webp.
+
 ## Usage
 
 **Step 1:** Install plugin:
