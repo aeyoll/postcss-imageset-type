@@ -1,28 +1,47 @@
-module.exports = (opts = { }) => {
+const replaceExt = require('replace-ext');
 
-  // Work with options here
+function getImagePath(value) {
+  const reg = /(?:\(['"]?)(.*?)(?:['"]?\))/;
+  const cleanPath = reg.exec(value);
+
+  return cleanPath[1];
+}
+
+module.exports = (opts = { }) => {
+  const useAvif = opts && typeof opts.useAvif !== 'undefined' ? opts.useAvif : true;
+  const useWebp = opts && typeof opts.useWebp !== 'undefined' ? opts.useWebp : true;
 
   return {
-    postcssPlugin: 'postcss-imageset-type',
-    /*
-    Root (root, postcss) {
-      // Transform CSS AST here
-    }
-    */
+    postcssPlugin: 'imageset-type',
 
-    /*
-    Declaration (decl, postcss) {
-      // The faster way to find Declaration node
-    }
-    */
-
-    /*
     Declaration: {
-      color: (decl, postcss) {
-        // The fastest way find Declaration node if you know property name
+      'background-image': (decl) => {
+        if (decl.value.includes('image-set')) {
+          return;
+        }
+
+        const imagePath = getImagePath(decl.value);
+
+        let imageSet = [];
+
+        if (useAvif) {
+          imageSet.push(`'${replaceExt(imagePath, '.avif')}' type('image/avif')`);
+        }
+
+        if (useWebp) {
+          imageSet.push(`'${replaceExt(imagePath, '.webp')}' type('image/webp')`);
+        }
+
+        if (useAvif || useWebp) {
+          imageSet.push(`'${imagePath}' type('image/jpeg')`);
+
+          decl.after({
+            prop: 'background-image',
+            value: `image-set(${imageSet.join(',')})`,
+          });
+        }
       }
     }
-    */
   }
 }
 module.exports.postcss = true

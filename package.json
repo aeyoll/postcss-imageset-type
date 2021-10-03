@@ -58,5 +58,8 @@
         "statements": 100
       }
     }
+  },
+  "dependencies": {
+    "replace-ext": "^2.0.0"
   }
 }
