@@ -15,6 +15,13 @@ it('adds image-set if useAvif and useWebp options are present', async () => {
     {useAvif: true, useWebp: true})
 })
 
+it('adds image-set if useAvif and useWebp options are present (using absolute url)', async () => {
+  await run(
+    '.foo {background-image: url(\'https://example.org/img/logo.jpg\');}',
+    '.foo {background-image: url(\'https://example.org/img/logo.jpg\');background-image: image-set(\'https://example.org/img/logo.avif\' type(\'image/avif\'),\'https://example.org/img/logo.webp\' type(\'image/webp\'),\'https://example.org/img/logo.jpg\' type(\'image/jpeg\'));}',
+    {useAvif: true, useWebp: true})
+})
+
 it('adds image-set if useAvif options is present', async () => {
   await run(
     '.foo {background-image: url(\'img/logo.jpg\');}',

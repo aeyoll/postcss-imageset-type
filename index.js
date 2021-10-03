@@ -7,6 +7,32 @@ function getImagePath(value) {
   return cleanPath[1];
 }
 
+function isValidHttpUrl(string) {
+  let url;
+
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+
+  return url.protocol === 'http:' || url.protocol === 'https:';
+}
+
+function localReplaceExt(value, ext) {
+  let newValue;
+
+  if (isValidHttpUrl(value)) {
+    const url = new URL(value);
+    url.pathname = replaceExt(url.pathname, ext);
+    newValue = url;
+  } else {
+    newValue = replaceExt(value, ext);
+  }
+
+  return newValue;
+}
+
 module.exports = (opts = { }) => {
   const useAvif = opts && typeof opts.useAvif !== 'undefined' ? opts.useAvif : true;
   const useWebp = opts && typeof opts.useWebp !== 'undefined' ? opts.useWebp : true;
@@ -25,11 +51,11 @@ module.exports = (opts = { }) => {
         let imageSet = [];
 
         if (useAvif) {
-          imageSet.push(`'${replaceExt(imagePath, '.avif')}' type('image/avif')`);
+          imageSet.push(`'${localReplaceExt(imagePath, '.avif')}' type('image/avif')`);
         }
 
         if (useWebp) {
-          imageSet.push(`'${replaceExt(imagePath, '.webp')}' type('image/webp')`);
+          imageSet.push(`'${localReplaceExt(imagePath, '.webp')}' type('image/webp')`);
         }
 
         if (useAvif || useWebp) {
