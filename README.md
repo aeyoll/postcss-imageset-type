@@ -2,11 +2,15 @@
 
 [PostCSS](https://github.com/postcss/postcss) plugin for adding image-set type to background-images.
 
+Input:
+
 ```css
 .foo {
   background-image: url('img/logo.jpg');
 }
 ```
+
+Output:
 
 ```css
 .foo {
