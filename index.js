@@ -1,6 +1,10 @@
 const replaceExt = require('replace-ext');
 
 function getImagePath(value) {
+  if (value.indexOf('data:') > -1) {
+    return false;
+  }
+
   const reg = /(?:\(['"]?)(.*?)(?:['"]?\))/;
   const cleanPath = reg.exec(value);
 
@@ -47,6 +51,9 @@ module.exports = (opts = { }) => {
         }
 
         const imagePath = getImagePath(decl.value);
+        if (imagePath === false) {
+          return;
+        }
 
         let imageSet = [];
 
