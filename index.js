@@ -1,14 +1,18 @@
 const replaceExt = require('replace-ext');
 
 function getImagePath(value) {
-  if (value.indexOf('data:') > -1) {
-    return false;
+  let path = false;
+
+  if (value.indexOf('data:') === -1 && value.indexOf('var(') === -1) {
+    const reg = /(?:\(['"]?)(.*?)(?:['"]?\))/;
+    const cleanPath = reg.exec(value);
+
+    if (cleanPath !== null) {
+      path = cleanPath[1];
+    }
   }
 
-  const reg = /(?:\(['"]?)(.*?)(?:['"]?\))/;
-  const cleanPath = reg.exec(value);
-
-  return cleanPath[1];
+  return path;
 }
 
 function isValidHttpUrl(string) {

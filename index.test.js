@@ -56,3 +56,10 @@ it('does not add image-set if background image is a base64 img', async () => {
     '.foo {background-image: url(\'data:image/svg+xml;utf8,<svg ...> ... </svg>\');}',
     {useAvif: true, useWebp: true})
 })
+
+it('does not add image-set if background image is a css variable', async () => {
+  await run(
+    '.foo {background-image: url(var(--path));}',
+    '.foo {background-image: url(var(--path));}',
+    {useAvif: true, useWebp: true})
+})
